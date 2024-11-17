@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { 
+  Container, 
+  Typography, 
+  Box,
+} from '@mui/material';
+import AddAccountForm from './components/AddAccountForm';
+import AccountsTable from './components/AccountsTable';
+import { useAccounts } from './hooks/useAccounts';
 
 function App() {
+  const { accounts, loading, error, refetchAccounts } = useAccounts();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container maxWidth="lg">
+      <Box sx={{ my: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          ImmuDB Playground - Account Management
+        </Typography>
+
+        <AddAccountForm onAccountAdded={refetchAccounts} />
+
+        {error && (
+          <Typography color="error" sx={{ mt: 2 }}>
+            {error}
+          </Typography>
+        )}
+
+        <AccountsTable accounts={accounts} loading={loading} />
+      </Box>
+    </Container>
   );
 }
 
